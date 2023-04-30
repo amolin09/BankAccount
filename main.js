@@ -54,10 +54,14 @@ class BankAccount {
     }
 
     else{
-    console.log('Payment made to ' + currTransaction.payee + ' in the amount of $' + currTransaction.amount + '.')
-    currTransaction.amount = currTransaction.amount * -1
-    this.transactions.push(currTransaction)
-    
+      if(currTransaction.amount < 0){
+        console.log('Invalid charge')
+      }
+      else{
+      console.log('Payment made to ' + currTransaction.payee + ' in the amount of $' + currTransaction.amount + '.')
+      currTransaction.amount = currTransaction.amount * -1
+      this.transactions.push(currTransaction)
+      }
     }
   }
 }
@@ -91,4 +95,5 @@ firstBankAccount.deposit(-10)
 firstBankAccount.charge('Best Buy Inc', 500)
 firstBankAccount.charge('HEB', 48.95)
 firstBankAccount.balance()
+firstBankAccount.charge('Sketchy Loan', -98)
 console.log(firstBankAccount.transactions)
