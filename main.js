@@ -1,10 +1,10 @@
 class BankAccount {
   
   constructor(accountNumber, owner){
-    this.accountNumber = accountNumber,
+    this.accountNumber = accountNumber
     this.owner = owner
 
-    this.amount = 0
+    this.accountBalance = 0
   }
 
   transactions = []
@@ -16,13 +16,15 @@ class BankAccount {
       let sum = 0
       
       for (let i = 0; i < this.transactions.length; i++){
-        sum += this.transactions.amount
+        sum += this.transactions[i].amount
       }
-      console.log('Balance: ' + sum)
+      this.accountBalance = sum
+      console.log('The current balance for account #' + this.accountNumber + ' is $' + this.accountBalance)
     }
 
     else if(this.transactions.length == 1){
-      console.log('Balance: ' + this.transactions[0])
+      this.amount = this.transactions[0].amount
+      console.log('The current balance for account #' + this.accountNumber + ' is $' + this.accountBalance)
     }
 
     else(
@@ -31,33 +33,62 @@ class BankAccount {
   }
 
   deposit(amt){
-    let currTransaction = new Transactions(amt, this.owner)
-    this.transactions.push()
-    console.log(this.transactions)
-    console.log(currTransaction.date)
+    let currTransaction = new Transaction(amt, this.owner)
+    
+    if(currTransaction.amount <= 0 ){
+      console.log('Invalid deposit')
+    }
+
+    else{
+      this.transactions.push(currTransaction)
+      console.log('Deposited $' + currTransaction.amount + ' to account #' + this.accountNumber + '.')
+    }
+    
   }
 
   charge(payee, amt){
-    let currTransaction = new Transactions(amt, payee)
-    this.transactions.push()
+    let currTransaction = new Transaction(amt, payee)
+    
+    if(currTransaction.amount > this.accountBalance){
+      console.log('Payment Declined')
+    }
+
+    else{
+    console.log('Payment made to ' + currTransaction.payee + ' in the amount of $' + currTransaction.amount + '.')
+    currTransaction.amount = currTransaction.amount * -1
+    this.transactions.push(currTransaction)
+    
+    }
   }
 }
 
-class Transactions{
+class Transaction{
 
   constructor(amount, payee){
-    this.amount = amount,
+    this.amount = amount
     this.payee = payee
 
     const d = new Date()
     this.date = d.getDay()
   }
 
+  date
   
 }
 
 let firstBankAccount = new BankAccount('110529', 'Alex Molina')
 
+let firstTransaction = new Transaction(10.50, "Rachel")
 
-firstBankAccount.deposit(10)
-// firstBankAccount.deposit(50)
+
+// console.log(firstTransaction.date)
+firstBankAccount.deposit(50)
+firstBankAccount.deposit(100)
+firstBankAccount.balance()
+firstBankAccount.charge('Little Caesars Pizza', 30)
+firstBankAccount.balance()
+firstBankAccount.deposit(-10)
+firstBankAccount.charge('Best Buy Inc', 500)
+firstBankAccount.charge('HEB', 48.95)
+firstBankAccount.balance()
+console.log(firstBankAccount.transactions)
